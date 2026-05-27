@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+
+  --bg: 248 253 250;
+  --fg: 18 33 24;
+  --muted: 88 104 95;
+  --card: 255 255 255;
+  --card-elevated: 255 255 255;
+  --nav: 240 253 244;
+  --sidebar: 255 255 255;
+  --border: 211 229 220;
+
+  --primary: 5 150 105;
+  --primary-700: 4 120 87;
+  --primary-900: 6 78 59;
+  --ring: 16 185 129;
+
+  --soft: 236 253 245;
+  --soft-2: 220 252 231;
+  --mint: 209 250 229;
+  --shadow-soft: 0 18px 50px rgba(6, 78, 59, 0.10);
+}
+
+html.dark {
+  color-scheme: dark;
+  --bg: 8 29 20;
+  --fg: 235 253 244;
+  --muted: 174 205 190;
+  --card: 13 44 31;
+  --card-elevated: 15 54 38;
+  --nav: 13 54 38;
+  --sidebar: 10 39 28;
+  --border: 39 91 66;
+  --primary: 52 211 153;
+  --primary-700: 16 185 129;
+  --primary-900: 167 243 208;
+  --ring: 110 231 183;
+  --soft: 18 67 48;
+  --soft-2: 22 84 60;
+  --mint: 32 104 74;
+  --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.24);
+}
+
+@layer base {
+  * {
+    @apply border-[rgb(var(--border))];
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-[rgb(var(--bg))] text-[rgb(var(--fg))] antialiased;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .libro-surface {
+    border: 1px solid rgb(var(--border));
+    background: rgb(var(--card));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .libro-panel {
+    border: 1px solid rgb(var(--border));
+    background:
+      linear-gradient(135deg, rgba(16, 185, 129, 0.10), transparent 42%),
+      rgb(var(--card));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .libro-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 1rem;
+    border: 1px solid rgb(var(--border));
+    background: rgb(var(--card-elevated));
+  }
+
+  .libro-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+
+  .libro-table thead {
+    background: rgb(var(--soft));
+    color: rgb(var(--muted));
+    font-size: 0.75rem;
+  }
+
+  .libro-table th,
+  .libro-table td {
+    padding: 0.875rem 1rem;
+    vertical-align: middle;
+  }
+
+  .libro-table tbody tr {
+    border-bottom: 1px solid rgb(var(--border));
+    transition: background-color 160ms ease;
+  }
+
+  .libro-table tbody tr:hover {
+    background: rgba(16, 185, 129, 0.06);
+  }
+
+  .libro-table tbody tr:not(:last-child) td {
+    border-bottom: 1px solid rgb(var(--border));
+  }
+
+  .libro-empty {
+    border: 1px dashed rgb(var(--border));
+    border-radius: 1rem;
+    background: rgba(16, 185, 129, 0.07);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(var(--fg));
+  }
+}
