@@ -12,6 +12,8 @@ export type Me = {
 type AuthState = {
   me: Me | null
   setMe: (me: Me | null) => void
+  loggingOut: boolean
+  setLoggingOut: (v: boolean) => void
   darkMode: boolean
   setDarkMode: (v: boolean) => void
 }
@@ -19,6 +21,8 @@ type AuthState = {
 export const useAuthStore = create<AuthState>((set) => ({
   me: null,
   setMe: (me) => set({ me }),
+  loggingOut: false,
+  setLoggingOut: (loggingOut) => set({ loggingOut }),
   darkMode: document.documentElement.classList.contains('dark'),
   setDarkMode: (v) =>
     set(() => {
@@ -26,4 +30,3 @@ export const useAuthStore = create<AuthState>((set) => ({
       return { darkMode: v }
     }),
 }))
-

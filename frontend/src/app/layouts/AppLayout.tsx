@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { BookOpen, Bell, ChartPie, Home, Settings, Users, Handshake, ScrollText, UserRound, LogOut, Menu, SunMedium, Moon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -16,10 +17,12 @@ export function AppLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const me = useAuthStore((s) => s.me)
   const setMe = useAuthStore((s) => s.setMe)
+  const setLoggingOut = useAuthStore((s) => s.setLoggingOut)
   const darkMode = useAuthStore((s) => s.darkMode)
   const setDarkMode = useAuthStore((s) => s.setDarkMode)
   const nav = useNavigate()
   const location = useLocation()
+  const queryClient = useQueryClient()
 
   const items = useMemo<NavItem[]>(
     () => [
@@ -41,13 +44,16 @@ export function AppLayout() {
   const visibleItems = items.filter((it) => !it.roles || (me && it.roles.includes(me.role)))
 
   async function onLogout() {
+    setLoggingOut(true)
     try {
       await ensureCsrfCookie()
       await api.post('/api/auth/logout')
       setMe(null)
+      queryClient.removeQueries({ queryKey: ['me'] })
       toast.success('Logged out.')
       nav('/login', { replace: true })
     } catch {
+      setLoggingOut(false)
       toast.error('Logout failed.')
     }
   }

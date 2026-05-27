@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { motion } from 'framer-motion'
+import { useQueryClient } from '@tanstack/react-query'
+import { ArrowLeft } from 'lucide-react'
 import { LibroLogo } from '../../components/brand/LibroLogo'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
@@ -9,27 +11,36 @@ import { Input } from '../../components/ui/input'
 import { api, ensureCsrfCookie } from '../../lib/api'
 import { useAuthStore } from '../../stores/authStore'
 import { pageTransition, pageVariants } from '../../components/ui/motion'
+import { apiErrorMessage } from '../../lib/errors'
 
 export function LoginPage() {
   const [email, setEmail] = useState('member@libro.test')
   const [password, setPassword] = useState('password')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const setMe = useAuthStore((s) => s.setMe)
+  const setLoggingOut = useAuthStore((s) => s.setLoggingOut)
+  const queryClient = useQueryClient()
   const nav = useNavigate()
   const loc = useLocation() as any
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
+    setError('')
     try {
       await ensureCsrfCookie()
-      await api.post('/api/auth/login', { email, password })
-      const me = await api.get('/api/me')
-      setMe(me.data.user)
+      const res = await api.post('/api/auth/login', { email, password })
+      const user = res.data.user
+      setMe(user)
+      setLoggingOut(false)
+      queryClient.setQueryData(['me'], user)
       toast.success('Welcome back.')
       nav(loc.state?.from ?? '/app/dashboard', { replace: true })
     } catch (err: any) {
-      toast.error(err?.response?.data?.message ?? 'Login failed.')
+      const msg = apiErrorMessage(err, 'Login failed. Please check your credentials and try again.')
+      setError(msg)
+      toast.error(msg)
     } finally {
       setLoading(false)
     }
@@ -42,8 +53,17 @@ export function LoginPage() {
       animate="animate"
       exit="exit"
       transition={pageTransition}
-      className="mx-auto grid min-h-screen max-w-6xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-2 lg:items-center lg:px-6"
+      className="relative mx-auto grid min-h-screen max-w-6xl grid-cols-1 gap-8 px-4 pb-8 pt-20 lg:grid-cols-2 lg:items-center lg:px-6 lg:py-8"
     >
+      <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
+        <Button asChild variant="ghost" size="sm" className="rounded-full bg-[rgb(var(--card)/0.78)] shadow-sm backdrop-blur">
+          <Link to="/">
+            <ArrowLeft className="h-4 w-4" />
+            Back to home
+          </Link>
+        </Button>
+      </div>
+
       <div className="hidden lg:block">
         <div className="libro-panel rounded-2xl p-8">
           <LibroLogo subtitle="Library Management System" />
@@ -74,6 +94,11 @@ export function LoginPage() {
               <div className="form-label">Password</div>
               <Input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
+            {error && (
+              <div className="libro-validation rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-400/30 dark:bg-red-500/10 dark:text-red-100">
+                {error}
+              </div>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Signing in…' : 'Sign in'}
             </Button>

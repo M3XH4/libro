@@ -1,16 +1,19 @@
-import { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { useMe } from '../../hooks/useMe'
 import { Skeleton } from '../../components/ui/skeleton'
+import { useAuthStore } from '../../stores/authStore'
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
-  const { isLoading, isError } = useMe()
-  const nav = useNavigate()
+  const me = useAuthStore((s) => s.me)
+  const loggingOut = useAuthStore((s) => s.loggingOut)
+  const { isLoading, isError } = useMe(!me && !loggingOut)
   const loc = useLocation()
 
-  useEffect(() => {
-    if (isError) nav('/login', { replace: true, state: { from: loc.pathname } })
-  }, [isError, loc.pathname, nav])
+  if (loggingOut) {
+    return <Navigate to="/login" replace />
+  }
+
+  if (me) return <>{children}</>
 
   if (isLoading) {
     return (
@@ -28,6 +31,9 @@ export function RequireAuth({ children }: { children: React.ReactNode }) {
     )
   }
 
+  if (isError) {
+    return <Navigate to="/login" replace state={{ from: loc.pathname }} />
+  }
+
   return <>{children}</>
 }
-

@@ -4,6 +4,7 @@ import { AppLayout } from './app/layouts/AppLayout'
 import { LandingPage } from './pages/public/LandingPage'
 import { LoginPage } from './pages/public/LoginPage'
 import { RegisterPage } from './pages/public/RegisterPage'
+import { NotFoundPage } from './pages/public/NotFoundPage'
 import { DashboardAdmin } from './pages/app/dashboards/DashboardAdmin'
 import { DashboardLibrarian } from './pages/app/dashboards/DashboardLibrarian'
 import { DashboardMember } from './pages/app/dashboards/DashboardMember'
@@ -92,7 +93,7 @@ export default function App() {
         <Route path="profile" element={<UserProfilePage />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }
