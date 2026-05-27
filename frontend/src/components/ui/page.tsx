@@ -1,11 +1,23 @@
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../../lib/cn'
+import { listVariants, pageTransition, pageVariants } from './motion'
 
 export function PageShell({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('space-y-5', className)} {...props} />
+  return (
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
+      className={cn('space-y-5', className)}
+      {...props}
+    />
+  )
 }
 
 export function PageHeader({
@@ -20,17 +32,30 @@ export function PageHeader({
   actions?: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <motion.div
+      variants={listVariants}
+      initial="initial"
+      animate="animate"
+      className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+    >
       <div className="min-w-0">
-        <div className="text-sm font-semibold text-[rgb(var(--primary))]">{eyebrow}</div>
-        <h1 className="mt-1 break-words text-2xl font-bold tracking-normal text-[rgb(var(--fg))] sm:text-3xl">
+        <motion.div variants={pageVariants} transition={pageTransition} className="text-sm font-semibold text-[rgb(var(--primary))]">
+          {eyebrow}
+        </motion.div>
+        <motion.h1 variants={pageVariants} transition={pageTransition} className="mt-1 break-words text-2xl font-bold tracking-normal text-[rgb(var(--fg))] sm:text-3xl">
           {title}
-        </h1>
+        </motion.h1>
         {description && (
-          <div className="mt-1 max-w-2xl text-sm text-[rgb(var(--muted))]">{description}</div>
+          <motion.div variants={pageVariants} transition={pageTransition} className="mt-1 max-w-2xl text-sm text-[rgb(var(--muted))]">
+            {description}
+          </motion.div>
         )}
       </div>
-      {actions && <div className="flex flex-col gap-2 sm:flex-row sm:items-center">{actions}</div>}
-    </div>
+      {actions && (
+        <motion.div variants={pageVariants} transition={pageTransition} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          {actions}
+        </motion.div>
+      )}
+    </motion.div>
   )
 }

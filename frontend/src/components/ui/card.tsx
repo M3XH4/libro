@@ -1,14 +1,21 @@
 import * as React from 'react'
+import { motion } from 'framer-motion'
 import { cn } from '../../lib/cn'
+import { cardTransition, itemVariants } from './motion'
 
 export function Card({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
+    <motion.div
+      variants={itemVariants}
+      initial="initial"
+      animate="animate"
+      transition={cardTransition}
+      whileHover={{ y: -3 }}
       className={cn(
-        'rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] shadow-[var(--shadow-soft)]',
+        'rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] shadow-[var(--shadow-soft)] transition-colors duration-200 will-change-transform',
         className,
       )}
       {...props}

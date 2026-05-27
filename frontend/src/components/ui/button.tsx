@@ -20,7 +20,8 @@ export function Button({
   return (
     <Comp
       className={cn(
-        'inline-flex min-h-10 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition',
+        'inline-flex min-h-10 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all duration-200 ease-out',
+        'active:scale-[0.98] enabled:hover:-translate-y-0.5 enabled:hover:shadow-md',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--ring))] focus-visible:ring-offset-2 focus-visible:ring-offset-[rgb(var(--bg))]',
         'disabled:pointer-events-none disabled:opacity-50',
         size === 'sm' && 'h-9 px-3',
