@@ -16,7 +16,7 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer diagnose || true
-RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --ignore-platform-req=ext-redis
+RUN composer update --no-dev --optimize-autoloader --no-interaction --prefer-dist --ignore-platform-req=ext-redis
 
 RUN php artisan config:clear || true
 
