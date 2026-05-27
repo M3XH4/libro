@@ -51,6 +51,7 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 80
 
 CMD php artisan config:clear && \
-    php artisan migrate:fresh --seed --force && \
+    php artisan migrate --force && \
+    php artisan db:seed --force && \
     php artisan storage:link || true && \
     apache2-foreground
