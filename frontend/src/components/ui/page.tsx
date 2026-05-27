@@ -15,7 +15,7 @@ export function PageShell({
       exit="exit"
       transition={pageTransition}
       className={cn('space-y-5', className)}
-      {...props}
+      {...(props as any)}
     />
   )
 }

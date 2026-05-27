@@ -76,7 +76,16 @@ export function DashboardLibrarian() {
               <LineChart data={overview.data?.trend ?? []}>
                 <XAxis dataKey="date" hide />
                 <Tooltip />
-                <Line type="monotone" dataKey="borrowings" stroke="rgb(var(--primary))" strokeWidth={2} dot={false} />
+                <Line
+                  type="monotone"
+                  dataKey="borrowings"
+                  stroke="rgb(var(--primary))"
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 5, strokeWidth: 0 }}
+                  isAnimationActive
+                  animationDuration={360}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}

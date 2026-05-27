@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
 import { LibroLogo } from '../../components/brand/LibroLogo'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
 import { Input } from '../../components/ui/input'
 import { api, ensureCsrfCookie } from '../../lib/api'
 import { useAuthStore } from '../../stores/authStore'
+import { pageTransition, pageVariants } from '../../components/ui/motion'
 
 export function RegisterPage() {
   const [name, setName] = useState('')
@@ -41,7 +43,14 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="mx-auto grid min-h-screen max-w-6xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-2 lg:items-center lg:px-6">
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
+      className="mx-auto grid min-h-screen max-w-6xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-2 lg:items-center lg:px-6"
+    >
       <div className="hidden lg:block">
         <div className="libro-panel rounded-2xl p-8">
           <LibroLogo subtitle="Library Management System" />
@@ -66,19 +75,28 @@ export function RegisterPage() {
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="space-y-2">
               <div className="form-label">Full name</div>
-              <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Juan Dela Cruz" />
+              <Input required value={name} onChange={(e) => setName(e.target.value)} placeholder="Juan Dela Cruz" />
             </div>
             <div className="space-y-2">
               <div className="form-label">Email</div>
-              <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@school.edu" />
+              <Input required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@school.edu" />
             </div>
             <div className="space-y-2">
               <div className="form-label">Password</div>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className="space-y-2">
               <div className="form-label">Confirm password</div>
-              <Input type="password" value={passwordConfirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} />
+              <Input
+                required
+                type="password"
+                value={passwordConfirmation}
+                aria-invalid={passwordConfirmation !== '' && password !== passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+              />
+              {passwordConfirmation !== '' && password !== passwordConfirmation && (
+                <div className="libro-validation mt-1 text-xs text-red-600">Passwords do not match.</div>
+              )}
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Creating…' : 'Create account'}
@@ -92,6 +110,6 @@ export function RegisterPage() {
           </form>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   )
 }

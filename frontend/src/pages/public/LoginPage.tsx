@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { motion } from 'framer-motion'
 import { LibroLogo } from '../../components/brand/LibroLogo'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
 import { Input } from '../../components/ui/input'
 import { api, ensureCsrfCookie } from '../../lib/api'
 import { useAuthStore } from '../../stores/authStore'
+import { pageTransition, pageVariants } from '../../components/ui/motion'
 
 export function LoginPage() {
   const [email, setEmail] = useState('member@libro.test')
@@ -34,7 +36,14 @@ export function LoginPage() {
   }
 
   return (
-    <div className="mx-auto grid min-h-screen max-w-6xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-2 lg:items-center lg:px-6">
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
+      className="mx-auto grid min-h-screen max-w-6xl grid-cols-1 gap-8 px-4 py-8 lg:grid-cols-2 lg:items-center lg:px-6"
+    >
       <div className="hidden lg:block">
         <div className="libro-panel rounded-2xl p-8">
           <LibroLogo subtitle="Library Management System" />
@@ -59,11 +68,11 @@ export function LoginPage() {
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="space-y-2">
               <div className="form-label">Email</div>
-              <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@school.edu" />
+              <Input required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@school.edu" />
             </div>
             <div className="space-y-2">
               <div className="form-label">Password</div>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? 'Signing in…' : 'Sign in'}
@@ -77,6 +86,6 @@ export function LoginPage() {
           </form>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   )
 }

@@ -62,9 +62,9 @@ export function MembersManagementPage() {
           <CardDescription>Creates a new member account (default password: password).</CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-1 gap-3 md:grid-cols-4">
-          <Input placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} />
-          <Input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input required placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} />
+          <Input required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
           <Button
             onClick={() => create.mutate()}
             disabled={create.isPending || name.trim() === '' || email.trim() === '' || password !== passwordConfirmation}
@@ -76,10 +76,11 @@ export function MembersManagementPage() {
               type="password"
               placeholder="Confirm password"
               value={passwordConfirmation}
+              aria-invalid={password !== passwordConfirmation}
               onChange={(e) => setPasswordConfirmation(e.target.value)}
             />
             {password !== passwordConfirmation && (
-              <div className="mt-1 text-xs text-red-600">Passwords do not match.</div>
+              <div className="libro-validation mt-1 text-xs text-red-600">Passwords do not match.</div>
             )}
           </div>
         </CardContent>

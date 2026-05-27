@@ -81,6 +81,12 @@ html.dark {
     border-radius: 1rem;
     border: 1px solid rgb(var(--border));
     background: rgb(var(--card-elevated));
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .libro-table-wrap:hover {
+    border-color: rgba(16, 185, 129, 0.44);
+    box-shadow: 0 12px 34px rgba(6, 78, 59, 0.08);
   }
 
   .libro-table {
@@ -106,11 +112,12 @@ html.dark {
 
   .libro-table tbody tr {
     border-bottom: 1px solid rgb(var(--border));
-    transition: background-color 160ms ease;
+    transition: background-color 160ms ease, box-shadow 160ms ease;
   }
 
   .libro-table tbody tr:hover {
     background: rgba(16, 185, 129, 0.06);
+    box-shadow: inset 3px 0 0 rgb(var(--primary));
   }
 
   .libro-table tbody tr:not(:last-child) td {
@@ -123,11 +130,146 @@ html.dark {
     background: rgba(16, 185, 129, 0.07);
     padding: 2rem;
     text-align: center;
+    animation: libro-empty-in 260ms ease-out both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .libro-empty::before {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 auto 0.75rem;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 50% 38%, rgb(var(--primary)) 0 18%, transparent 19%),
+      linear-gradient(135deg, rgba(16, 185, 129, 0.22), rgba(16, 185, 129, 0.05));
+    box-shadow: 0 10px 24px rgba(6, 78, 59, 0.10);
+    animation: libro-empty-float 3.4s ease-in-out infinite;
+  }
+
+  .libro-skeleton {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .libro-skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.58), transparent);
+    animation: libro-shimmer 1.35s ease-in-out infinite;
   }
 
   .form-label {
     font-size: 0.875rem;
     font-weight: 600;
     color: rgb(var(--fg));
+  }
+
+  .libro-validation {
+    animation: libro-validation-in 180ms ease-out both;
+  }
+
+  .libro-toast {
+    animation: libro-toast-in 220ms ease-out both;
+    box-shadow: var(--shadow-soft) !important;
+  }
+
+  [data-state="open"][role="dialog"],
+  [data-state="open"][data-radix-popper-content-wrapper],
+  [data-state="open"].radix-dropdown-content,
+  [data-state="open"].radix-select-content {
+    animation: libro-overlay-in 180ms ease-out both;
+  }
+
+  [data-state="closed"][role="dialog"],
+  [data-state="closed"].radix-dropdown-content,
+  [data-state="closed"].radix-select-content {
+    animation: libro-overlay-out 150ms ease-in both;
+  }
+}
+
+@keyframes libro-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes libro-empty-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes libro-empty-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes libro-validation-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes libro-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes libro-overlay-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes libro-overlay-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

@@ -18,7 +18,7 @@ export function Card({
         'rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card))] shadow-[var(--shadow-soft)] transition-colors duration-200 will-change-transform',
         className,
       )}
-      {...props}
+      {...(props as any)}
     />
   )
 }

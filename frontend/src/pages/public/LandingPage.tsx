@@ -1,13 +1,26 @@
 import { Link } from 'react-router-dom'
 import { BookOpenCheck, ShieldCheck, } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { LibroLogo } from '../../components/brand/LibroLogo'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card'
+import { itemVariants, listVariants, pageTransition, pageVariants } from '../../components/ui/motion'
 
 export function LandingPage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-6 sm:py-8 lg:px-6">
-      <header className="flex items-center justify-between gap-3 rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card)/0.88)] px-4 py-3 shadow-[var(--shadow-soft)] backdrop-blur">
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
+      className="mx-auto max-w-6xl px-4 py-6 sm:py-8 lg:px-6"
+    >
+      <motion.header
+        variants={itemVariants}
+        transition={pageTransition}
+        className="flex items-center justify-between gap-3 rounded-2xl border border-[rgb(var(--border))] bg-[rgb(var(--card)/0.88)] px-4 py-3 shadow-[var(--shadow-soft)] backdrop-blur"
+      >
         <LibroLogo subtitle="Library Management System" />
         <div className="flex shrink-0 items-center gap-2">
           <Button asChild variant="ghost">
@@ -17,10 +30,10 @@ export function LandingPage() {
             <Link to="/register">Get started</Link>
           </Button>
         </div>
-      </header>
+      </motion.header>
 
       <section className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
-        <div className="min-w-0">
+        <motion.div variants={listVariants} initial="initial" animate="animate" className="min-w-0">
           <h1 className="mt-5 max-w-3xl text-4xl font-bold tracking-normal text-[rgb(var(--fg))] sm:text-5xl">
             Libro Library Management System
           </h1>
@@ -44,9 +57,9 @@ export function LandingPage() {
             <span className="font-semibold text-[rgb(var(--fg))]">member@libro.test</span>. Password:{' '}
             <span className="font-semibold text-[rgb(var(--fg))]">password</span>.
           </div>
-        </div>
+        </motion.div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <motion.div variants={listVariants} initial="initial" animate="animate" className="grid gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -82,12 +95,12 @@ export function LandingPage() {
               Includes loading skeletons, empty states, toast feedback, and accessible contrast in light/dark themes.
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
       </section>
 
       <footer className="mt-14 border-t border-[rgb(var(--border))] pt-6 text-xs text-[rgb(var(--muted))]">
          <p>&copy; Libro 2026. All rights reserved.</p>
       </footer>
-    </div>
+    </motion.div>
   )
 }

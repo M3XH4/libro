@@ -42,11 +42,11 @@ export function UserProfilePage() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="space-y-2">
               <div className="form-label">Name</div>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
+              <Input required value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="space-y-2">
               <div className="form-label">Email</div>
-              <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input required value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
           </div>
 

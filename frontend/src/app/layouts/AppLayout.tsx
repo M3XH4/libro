@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { BookOpen, Bell, ChartPie, Home, Settings, Users, Handshake, ScrollText, UserRound, LogOut, Menu, SunMedium, Moon } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { AnimatePresence, motion } from 'framer-motion'
 import { LibroLogo } from '../../components/brand/LibroLogo'
 import { Button } from '../../components/ui/button'
+import { pageTransition } from '../../components/ui/motion'
 import { cn } from '../../lib/cn'
 import { api, ensureCsrfCookie } from '../../lib/api'
 import { useAuthStore } from '../../stores/authStore'
@@ -17,6 +19,7 @@ export function AppLayout() {
   const darkMode = useAuthStore((s) => s.darkMode)
   const setDarkMode = useAuthStore((s) => s.setDarkMode)
   const nav = useNavigate()
+  const location = useLocation()
 
   const items = useMemo<NavItem[]>(
     () => [
@@ -64,6 +67,7 @@ export function AppLayout() {
             className={({ isActive }) =>
               cn(
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                'hover:-translate-y-0.5 hover:shadow-sm',
                 isActive
                   ? 'bg-[rgb(var(--soft))] text-[rgb(var(--primary-900))] ring-1 ring-[rgba(16,185,129,0.24)]'
                   : 'text-[rgb(var(--muted))] hover:bg-[rgba(16,185,129,0.09)] hover:text-[rgb(var(--primary-900))]',
@@ -92,16 +96,35 @@ export function AppLayout() {
       <div className="mx-auto flex min-h-screen max-w-[1440px]">
         <div className="hidden lg:block">{Sidebar}</div>
 
-        {/* Mobile drawer */}
-        {mobileOpen && (
-          <div className="fixed inset-0 z-40 lg:hidden">
-            <div
-              className="absolute inset-0 bg-black/40"
-              onClick={() => setMobileOpen(false)}
-            />
-            <div className="absolute inset-y-0 left-0 w-72 shadow-2xl">{Sidebar}</div>
-          </div>
-        )}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              className="fixed inset-0 z-40 lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              <motion.div
+                className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
+                onClick={() => setMobileOpen(false)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18 }}
+              />
+              <motion.div
+                className="absolute inset-y-0 left-0 w-72 shadow-2xl"
+                initial={{ x: -320 }}
+                animate={{ x: 0 }}
+                exit={{ x: -320 }}
+                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {Sidebar}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-30 border-b border-[rgb(var(--border))] bg-[rgb(var(--nav)/0.92)] backdrop-blur supports-[backdrop-filter]:bg-[rgb(var(--nav)/0.78)]">
@@ -140,7 +163,17 @@ export function AppLayout() {
           </header>
 
           <main className="flex-1 px-4 py-5 sm:py-6 lg:px-6">
-            <Outlet />
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={pageTransition}
+              >
+                <Outlet />
+              </motion.div>
+            </AnimatePresence>
           </main>
         </div>
       </div>

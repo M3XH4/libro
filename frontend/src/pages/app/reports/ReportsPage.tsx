@@ -55,7 +55,13 @@ export function ReportsPage() {
                 <BarChart data={overview.data?.trend ?? []}>
                   <XAxis dataKey="date" hide />
                   <Tooltip />
-                  <Bar dataKey="borrowings" fill="rgb(var(--primary))" radius={[10, 10, 0, 0]} />
+                  <Bar
+                    dataKey="borrowings"
+                    fill="rgb(var(--primary))"
+                    radius={[10, 10, 0, 0]}
+                    isAnimationActive
+                    animationDuration={360}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             )}
