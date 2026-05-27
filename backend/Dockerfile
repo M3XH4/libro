@@ -23,4 +23,7 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-CMD php artisan migrate --force && apache2-foreground
+CMD php artisan config:clear && \
+    php artisan migrate:fresh --seed --force && \
+    php artisan storage:link || true && \
+    apache2-foreground
