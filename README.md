@@ -1,72 +1,300 @@
-# Libro — Laravel + React Library Management System
+# 📚 Libro - Library Management System
 
-Green-themed, Stitch-style modern **Library Management Web System** built with:
+![Laravel](https://img.shields.io/badge/Laravel-12+-FF2D20?style=for-the-badge\&logo=laravel)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge\&logo=react)
+![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?style=for-the-badge\&logo=vite)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge\&logo=postgresql)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-Styling-06B6D4?style=for-the-badge\&logo=tailwindcss)
 
-- **Backend**: Laravel (API) + Sanctum (SPA auth) + Queues + Notifications
-- **Frontend**: React 19 + Vite + Tailwind + Radix/shadcn-style UI + React Query + Zustand
+A modern, responsive, and scalable **Library Management System** built with **Laravel**, **React**, and **PostgreSQL**. Libro streamlines library operations by providing powerful tools for managing books, borrowing records, reservations, members, notifications, and analytics through an intuitive green-themed interface.
 
-## Features
+---
 
-- **Auth**: register, login, logout, forgot/reset password (API), role-based access
-- **Roles**: `admin`, `librarian`, `member`
-- **Books**: add/edit/delete books, authors, categories, physical copies, cover upload
-- **Borrowing**: borrow, return, due dates, overdue status, history
-- **Reservations**: reserve, cancel, queue position and expiration
-- **Members**: add/list/delete members (staff only)
-- **Fines**: list fines and mark paid (staff only)
-- **Reports**: KPIs + trends + top borrowed books (staff only)
-- **UI/UX**: responsive sidebar + top navbar, cards, tables, search/filter, toasts, skeletons, empty states, dark mode
+## ✨ Features
 
-## Repo layout
+### 👨‍💼 Admin Dashboard
 
-- `backend/` — Laravel API
-- `frontend/` — React SPA
+* User and role management
+* Library analytics and reports
+* Fine and penalty management
+* Audit logs
+* System settings
 
-## Local setup (Windows)
+### 📖 Book Management
 
-### Backend (Laravel)
+* Add, edit, and delete books
+* ISBN support
+* Book categories and authors
+* Book cover uploads
+* Multiple copy management
+* Availability tracking
+
+### 🔄 Borrowing System
+
+* Borrow and return books
+* Due date management
+* Overdue tracking
+* Borrowing history
+* Fine calculation
+
+### 📌 Reservation System
+
+* Reserve unavailable books
+* Reservation queue system
+* Reservation status tracking
+
+### 👥 Member Management
+
+* Student and member profiles
+* Borrowing records
+* Activity history
+
+### 📊 Reports & Analytics
+
+* Most borrowed books
+* Active members
+* Overdue reports
+* Borrowing trends
+* Exportable reports
+
+### 🔔 Notifications
+
+* Due date reminders
+* Overdue alerts
+* Reservation notifications
+
+### 🎨 Modern UI
+
+* Green-themed design
+* Responsive layout
+* Dark mode support
+* Interactive animations
+* Mobile-first experience
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React 19
+* Vite
+* Tailwind CSS
+* React Router
+* Axios
+* Framer Motion
+* Zustand
+
+### Backend
+
+* Laravel 12+
+* Sanctum Authentication
+* REST API
+* Laravel Queues
+
+### Database
+
+* PostgreSQL (Supabase)
+
+### Deployment
+
+* Vercel (Frontend)
+* Render (Backend)
+* Supabase (Database)
+
+---
+
+## 📂 Project Structure
+
+```bash
+libro/
+├── backend/
+│   ├── app/
+│   ├── database/
+│   ├── routes/
+│   ├── public/
+│   └── storage/
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── components/
+│   ├── pages/
+│   └── assets/
+│
+└── README.md
+```
+
+---
+
+## 🚀 Local Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/yourusername/libro.git
+cd libro
+```
+
+---
+
+### Backend Setup
 
 ```bash
 cd backend
-cp .env.example .env
+
 composer install
+
+cp .env.example .env
+
 php artisan key:generate
-php artisan migrate:fresh --seed
-php artisan storage:link
-php artisan serve --port=8000
 ```
 
-### Frontend (React)
+Configure your database connection inside `.env`
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=libro
+DB_USERNAME=postgres
+DB_PASSWORD=password
+```
+
+Run migrations:
+
+```bash
+php artisan migrate --seed
+```
+
+Start Laravel:
+
+```bash
+php artisan serve
+```
+
+Backend runs at:
+
+```text
+http://localhost:8000
+```
+
+---
+
+### Frontend Setup
 
 ```bash
 cd frontend
-cp .env.example .env
+
 npm install
+```
+
+Create `.env`:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Run frontend:
+
+```bash
 npm run dev
 ```
 
-Open the SPA at `http://localhost:5173/`.
+Frontend runs at:
 
-## Seeded demo accounts
-
-All use password `password`:
-
-- `admin@libro.test`
-- `librarian@libro.test`
-- `member@libro.test`
-
-## Deployment guide (high level)
-
-- Build frontend:
-
-```bash
-cd frontend
-npm run build
+```text
+http://localhost:5173
 ```
 
-- Serve the built frontend (any static host) and point `VITE_API_URL` to your backend URL.
-- Configure Laravel:
-  - Set `APP_URL`, `FRONTEND_URL`, `SANCTUM_STATEFUL_DOMAINS`
-  - Use a persistent DB (MySQL/PostgreSQL recommended)
-  - Configure `QUEUE_CONNECTION` (database/redis) and run a queue worker
-  - Enable HTTPS for secure cookies in production
+---
+
+## 🔐 Authentication
+
+Libro uses **Laravel Sanctum** for secure SPA authentication.
+
+Authentication features include:
+
+* Login
+* Registration
+* Logout
+* Protected routes
+* Session management
+* CSRF protection
+
+---
+
+## 🌐 Deployment
+
+### Frontend
+
+Deploy using:
+
+* Vercel
+
+Environment Variable:
+
+```env
+VITE_API_URL=https://your-api.onrender.com
+```
+
+---
+
+### Backend
+
+Deploy using:
+
+* Render
+
+Environment Variables:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+
+DB_CONNECTION=pgsql
+DB_HOST=your-supabase-host
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=your-password
+```
+
+---
+
+### Database
+
+Deploy using:
+
+* Supabase PostgreSQL
+
+---
+
+## 📱 Responsive Design
+
+Libro supports:
+
+* Mobile Phones
+* Tablets
+* Laptops
+* Desktop Monitors
+
+All pages are fully responsive and optimized for modern devices.
+
+---
+
+## 🔮 Future Enhancements
+
+* RFID Integration
+* QR Code Borrowing
+* Mobile Application
+* SMS Notifications
+* AI Book Recommendations
+* Multi-Branch Library Support
+* Digital eBook Reader
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
